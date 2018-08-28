@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+    <style>
+        .base1{
+            display:inline-block;
+        }
+        
+        .box{
+            width:40px;height:25px;background:thistle;text-align: center;line-height:25px;cursor:pointer;
+            position:absolute;left:0;top:0;
+        }
+        .box1{
+            width:40px;height:25px;background:thistle;text-align: center;line-height:25px;cursor:pointer;
+            position:absolute;left:40px;top:0;
+        }
+
+
+        .box3{
+            width:100px;height:100px;background:tan;
+            position:absolute;left:0;top:50px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div v-bind:class="['base']">
+            <h5 v-bind:class="['box']" v-on:click="show=true,show1=false">{{title1}}</h5>
+            <div  v-bind:class="['box3']" v-show="show">html下的文字</div>
+        </div>
+        <div v-bind:class="['base']">
+            <h5 v-bind:class="['box1']" v-on:click="show=false,show1=true">{{title2}}</h5>
+            <div  v-bind:class="['box3']" v-show="show1">css下的文字</div>
+        </div>
+    </div>
+    <script>
+        const vm=new Vue({
+            el:"#app",
+            data:{
+                title1:'html',
+                title2:'css',
+                show:false,
+                show1:false
+            },
+            methods:{
+               
+            }
+        })
+    </script>
+</body>
+</html>
