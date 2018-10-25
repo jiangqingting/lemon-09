@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>穿梭框效果</title>
+    <script src="js/vue.js"></script>
+    <style>
+        #app {
+            display: flex;
+            width: 700px;
+            justify-content: space-between;
+        }
+        .btn {
+            flex: 1;
+            display: flex;
+            justify-content: space-around;
+            flex-direction: column;
+        }
+        .box{
+            width: 300px;
+            height: 300px;
+            overflow: auto;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <Btn-Group :data.arr1="['张三,'李四']" 
+                   :data.arr2="['6','7']"  />
+    </div>
+    <script>
+         Vue.component('BtnGroup', {
+            props:['data'], // props选项用于接收 组件标签上 以html属性的方式传递的参数 
+            template: `
+            <div class="btn-group">
+                <div class="box">
+                    <div 
+                        v-for="(item, index) in arr1"
+                        >
+                        <input v-model="item.isChecked" type="checkbox"> {{item.value}}
+                    </div>
+                </div>
+                <div class="btn">
+                    <button @click="moveLeft" :disabled="cptArr2.length === 0"><<</button>
+                    <button @click="moveRight" :disabled="cptArr1.length === 0">>></button>
+                </div>
+                <div class="box">
+                    <div 
+                        v-for="(item, index) in arr2"
+                        >
+                        <input v-model="item.isChecked" type="checkbox">{{item.value}}
+                    </div>
+                </div>
+            </div>
+            `,
+            data() { // 在组件里的data选项和实例中的不一样 必须是一个函数
+                return {
+                    arr1: [
+                    {
+                        isChecked: false
+                    }],
+                    arr2: [ 
+                    {
+                        isChecked: false
+                    }]
+                }
+            },
+            computed: {
+                cptArr1() { // 计算arr1里是否有选中的数据
+                    return this.arr1.filter(k => {
+                        return k.isChecked
+                    })
+                },
+                cptArr2() { // 计算arr2里是否有选中的数据
+                    return this.arr2.filter(k => {
+                        return k.isChecked
+                    })
+                }
+            },
+            methods: {
+                moveRight() {
+                    // console.log(this.cptArr1)
+                    // 保留截取出来的数据
+                    const origin = JSON.parse(JSON.stringify(this.cptArr1))
+
+                    // 获取没有勾上的选项 保留起来
+                    this.arr1 = this.arr1.filter((k) => {
+                        return k.isChecked === false
+                    })
+
+                    // this.arr2.push(...origin)
+                    origin.forEach(k => {
+                        k.isChecked = false
+                        this.arr2.push(k)
+                    })
+                },
+                moveLeft() {
+                    // console.log(this.cptArr1)
+                    // 保留截取出来的数据
+                    const origin = JSON.parse(JSON.stringify(this.cptArr2))
+                    this.arr2 = this.arr2.filter((k) => {
+                        return k.isChecked === false
+                    })
+
+                    // this.arr2.push(...origin)
+                    origin.forEach(k => {
+                        k.isChecked = false
+                        this.arr1.push(k)
+                    })
+                }
+            }
+        })
+        new Vue({
+            el: '#app',
+        })
+    </script>
+</body>
+</html>
